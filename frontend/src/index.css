@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glow-cyan: 0, 229, 255;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-midnight-950 text-neutral-200;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', 'Sora', system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(0, 229, 255, 0.25);
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #06101b;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #38bdf8, #172554);
+  border-radius: 999px;
+}
+
+.font-mono-num {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.text-glow-gradient {
+  @apply bg-glow-gradient bg-clip-text text-transparent;
+}
+
+@layer components {
+  /* Glass surface used by every card/panel across the app */
+  .card {
+    @apply relative rounded-2xl border border-white/[0.08] bg-midnight-600/40 backdrop-blur-xl shadow-card;
+  }
+
+  .card-glow {
+    @apply card border-accent-400/25 shadow-glow;
+  }
+
+  .glass-panel {
+    @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl;
+  }
+
+  .btn {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 font-semibold text-sm tracking-wide transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed select-none;
+  }
+
+  .btn-primary {
+    @apply btn bg-glow-gradient text-midnight-950 shadow-glow hover:shadow-glow-lg hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply btn border border-accent-400/30 bg-white/[0.02] text-accent-200 hover:bg-accent-400/10 hover:border-accent-400/60 backdrop-blur-md;
+  }
+
+  .btn-danger {
+    @apply btn bg-danger/90 text-white hover:bg-danger active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-neutral-400 hover:text-accent-200 hover:bg-white/[0.04];
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-neutral-100 outline-none transition-all placeholder:text-neutral-600 focus:border-accent-400/60 focus:bg-white/[0.05] focus:ring-2 focus:ring-accent-400/20;
+  }
+
+  .label {
+    @apply block text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-2;
+  }
+
+  /* Animated cyan border ring, used behind hero/feature cards */
+  .glow-ring {
+    position: relative;
+  }
+  .glow-ring::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(120deg, rgba(56,189,248,0.7), rgba(0,229,255,0.05), rgba(56,189,248,0.7));
+    background-size: 200% 200%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: gradient-x 6s ease infinite;
+    pointer-events: none;
+  }
+
+  /* Mouse-follow spotlight used by SpotlightCard */
+  .spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+  .spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(0, 229, 255, 0.14),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+}
+
+@keyframes toast-in {
+  from { transform: translateY(-16px) scale(0.96); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
